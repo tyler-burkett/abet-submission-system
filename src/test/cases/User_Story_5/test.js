@@ -187,7 +187,7 @@ describe('Epic 5 - Download Course Portfolio', () => {
 
         it('creates course summary PDF', () => {
             //Arrange
-            var input = {
+            var summary = {
                 'course_name': 'Software Engineering for Senior Project',
                 'course_number': 'CS498',
                 'instructor_name': 'Ethan Toney',
@@ -283,79 +283,24 @@ describe('Epic 5 - Download Course Portfolio', () => {
                     }
                 ]
             };
+            var directory = "tmp";
             //Act
+            var pdf_made = create.create_course_summary_PDF(summary, directory);
+            
             //Assert
-            expect(() => {return create.create_course_summary_PDF(input)}).to.be.true;
+            expect(pdf_made).to.be.true;
 
-            //TODO: validate PDF; manually or automatically?
         })
 
-        it('throws error on invalid input', () => {
-            var input = {
-            };
-            //Act
-            //Assert
-            expect(() => {return create.create_course_summary_PDF(input)}).to.throw();
-
-            //TODO: validate no PDF; manually or automatically?
-        })
-
-    })
-
-    describe('create_SLO_PDFs', () => {
-        // this is ran after each unit test
-		afterEach(() => {
-			// this is needed to restore the CoursePortfolio model back to it's original state
-			// we don't want to break all future unit tests
-			sandbox.restore()
-        })
-
-        it('creates PDFs', () => {
+        it('throws error on invalid summary', () => {
             //Arrange
-            var input = [{
-                'slo_index': 1,
-                'slo_description': 'SLO 1',
-                'artifact_index': 1,
-                'artifact_name': "artifact 1",
-                'is_group_assignment': False,
-                'number_of_submissions': 1,
-                'evaluations': [{
-                    'eval_index': 1,
-                    'student_index': 1,
-                    'evaluation': [],
-                    'file': null
-                }]
-            }, 
-            {
-                'slo_index': 2,
-                'slo_description': 'SLO 2',
-                'artifact_index': 2,
-                'artifact_name': "artifact 2",
-                'is_group_assignment': False,
-                'number_of_submissions': 1,
-                'evaluations': [{
-                    'eval_index': 1,
-                    'student_index': 1,
-                    'evaluation': [],
-                    'file': null
-                }]
-            }];
-
-            //Act
-            //Assert
-            expect(() => {return create.create_SLO_PDFs(input)}).to.be.true;
-            //TODO: validate PDFs; manually or automatically?
-        })
-
-        it('throws error on invalid input', () => {
-            //Arrange
-            var input = {
+            var summary = {
             };
+            var directory = "tmp";
             //Act
             //Assert
-            expect(() => {return create.create_course_summary_PDF(input)}).to.throw();
+            expect(() => {return create.create_course_summary_PDF(summary, directory)}).to.throw();
 
-            //TODO: validate no PDF; manually or automatically?
         })
 
     })
