@@ -38,7 +38,7 @@ function summarize(course_portfolio) {
     //Calculate scores
 
     //Artifact scores (% meet or exceed for an artifact)
-    var artifact_scores = {};
+    var artifact_scores = [];
     for (var outcome in course_portfolio.outcomes) {
         for (var artifact in outcome.artifacts) {
             if (artifact_scores.hasOwnProperty(String(artifact.id)))
@@ -50,8 +50,11 @@ function summarize(course_portfolio) {
                     num_exceed_meet += 1;
                 total++;
             }
-            artifact_scores[String(artifact.id)] = { 'score' : num_exceed_meet / total, 
-                                                     'portfolio_slo_id' : artifact.portfolio_slo_id };
+            artifact_scores.push({
+                                'artifact_id': artifact.id,
+                                'score' : num_exceed_meet / total, 
+                                'portfolio_slo_id' : artifact.portfolio_slo_id 
+                            });
         }
     }
 

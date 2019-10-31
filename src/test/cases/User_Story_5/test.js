@@ -2,6 +2,7 @@
 var create = require('../../../main/lib/course_portfolio_create')
 const { expect } = require('../../chai')
 const sinon = require('sinon')
+var fs = require('fs')
 
 // we use a sandbox so that we can easily restore all stubs created in that sandbox
 const sandbox = sinon.createSandbox();
@@ -136,13 +137,117 @@ describe('Epic 5 - Download Course Portfolio', () => {
         
         it('summarizes course', () => {
             //Arrange
-            let course_input = {...course_input};
+			const CoursePortfolio = require('../../../main/models/CoursePortfolio')
+
+			// stub the CoursePortfolio.query() method
+			sandbox.stub(CoursePortfolio, "query").returns({
+				// stub the CoursePortfolio.query().eager() method
+				eager: sandbox.stub().returns({
+					// stub the CoursePortfolio.query().eager().findById() method
+					findById: sinon.stub().returns(course_input)
+				})
+			})
 
             //Act
-            var output = create.summarize(course_input);
+            const portfolio = await course_portfolio.get(1);
+            var output = create.summarize(portfolio);
             
             //Assert
-            expectoutputto.deep.equal({  
+            expectoutputto.deep.equal({
+                'course_name': 'Software Engineering for Senior Project',
+                'course_number': 'CS498',
+                'instructor_name': 'Ethan Toney',
+                'section': 1,
+                'semester': 'fall',
+                'year': 2019,
+                'number_students' : 5,
+                'course_score': 0.66,
+                'slo_scores': [0.66],
+                'artifact_scores': [1, 1, 0],
+                'student_evals': [
+                    {
+                        "id": 1,
+                        "portfolio_id": 1,
+                        "slo_id": 1,
+                        "slo": {
+                            "id": 1,
+                            "department_id": 1,
+                            "index": 2,
+                            "description": "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+                            "metrics": [
+                                {
+                                    "id": 1,
+                                    "slo_id": 1,
+                                    "index": 1,
+                                    "name": "Identify and interpret client needs and design constraints",
+                                    "exceeds": "n/a",
+                                    "meets": "n/a",
+                                    "partially": "n/a",
+                                    "not": "n/a"
+                                }
+                            ]
+                        },
+                        "artifacts": [
+                            {
+                                "id": 1,
+                                "portfolio_slo_id": 1,
+                                "index": 1,
+                                "name": "_unset_",
+                                "evaluations": [
+                                    {
+                                        "id": 1,
+                                        "artifact_id": 1,
+                                        "evaluation_index": 1,
+                                        "student_index": 1,
+                                        "evaluation": {
+                                            "id": 8,
+                                            "value" : "meets"
+                                        },
+                                        "file": null
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 2,
+                                "portfolio_slo_id": 1,
+                                "index": 2,
+                                "name": "_unset_",
+                                "evaluations": [
+                                    {
+                                        "id": 6,
+                                        "artifact_id": 2,
+                                        "evaluation_index": 1,
+                                        "student_index": 1,
+                                        "evaluation": {
+                                            "id": 7,
+                                            "value" : "exceeds"
+                                        },
+                                        "file": null
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 3,
+                                "portfolio_slo_id": 1,
+                                "index": 3,
+                                "name": "_unset_",
+                                "evaluations": [
+                                    {
+                                        "id": 11,
+                                        "artifact_id": 3,
+                                        "evaluation_index": 1,
+                                        "student_index": 1,
+                                        "evaluation": {
+                                            "id": 9,
+                                            "value" : "partially"
+                                        },
+                                        "file": null
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             });
 
         })
@@ -152,11 +257,118 @@ describe('Epic 5 - Download Course Portfolio', () => {
             let course_input = {...course_input};
             delete course_input.instructor_name;
 
+            //Arrange
+			const CoursePortfolio = require('../../../main/models/CoursePortfolio')
+
+			// stub the CoursePortfolio.query() method
+			sandbox.stub(CoursePortfolio, "query").returns({
+				// stub the CoursePortfolio.query().eager() method
+				eager: sandbox.stub().returns({
+					// stub the CoursePortfolio.query().eager().findById() method
+					findById: sinon.stub().returns(course_input)
+				})
+			})
+
             //Act
-            var output = create.summarize(course_input);
+            const portfolio = await course_portfolio.get(1);
+            var output = create.summarize(portfolio);
             
             //Assert
-            expectoutputto.deep.equal({  
+            expectoutputto.deep.equal({
+                'course_name': 'Software Engineering for Senior Project',
+                'course_number': 'CS498',
+                'instructor_name': 'ethan.toney',
+                'section': 1,
+                'semester': 'fall',
+                'year': 2019,
+                'number_students' : 5,
+                'course_score': 0.66,
+                'slo_scores': [0.66],
+                'artifact_scores': [1, 1, 0],
+                'student_evals': [
+                    {
+                        "id": 1,
+                        "portfolio_id": 1,
+                        "slo_id": 1,
+                        "slo": {
+                            "id": 1,
+                            "department_id": 1,
+                            "index": 2,
+                            "description": "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+                            "metrics": [
+                                {
+                                    "id": 1,
+                                    "slo_id": 1,
+                                    "index": 1,
+                                    "name": "Identify and interpret client needs and design constraints",
+                                    "exceeds": "n/a",
+                                    "meets": "n/a",
+                                    "partially": "n/a",
+                                    "not": "n/a"
+                                }
+                            ]
+                        },
+                        "artifacts": [
+                            {
+                                "id": 1,
+                                "portfolio_slo_id": 1,
+                                "index": 1,
+                                "name": "_unset_",
+                                "evaluations": [
+                                    {
+                                        "id": 1,
+                                        "artifact_id": 1,
+                                        "evaluation_index": 1,
+                                        "student_index": 1,
+                                        "evaluation": {
+                                            "id": 8,
+                                            "value" : "meets"
+                                        },
+                                        "file": null
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 2,
+                                "portfolio_slo_id": 1,
+                                "index": 2,
+                                "name": "_unset_",
+                                "evaluations": [
+                                    {
+                                        "id": 6,
+                                        "artifact_id": 2,
+                                        "evaluation_index": 1,
+                                        "student_index": 1,
+                                        "evaluation": {
+                                            "id": 7,
+                                            "value" : "exceeds"
+                                        },
+                                        "file": null
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 3,
+                                "portfolio_slo_id": 1,
+                                "index": 3,
+                                "name": "_unset_",
+                                "evaluations": [
+                                    {
+                                        "id": 11,
+                                        "artifact_id": 3,
+                                        "evaluation_index": 1,
+                                        "student_index": 1,
+                                        "evaluation": {
+                                            "id": 9,
+                                            "value" : "partially"
+                                        },
+                                        "file": null
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             });
 
         })
@@ -166,11 +378,117 @@ describe('Epic 5 - Download Course Portfolio', () => {
             let course_input = {...course_input};
             delete course_input.course_name;
 
+			const CoursePortfolio = require('../../../main/models/CoursePortfolio')
+
+			// stub the CoursePortfolio.query() method
+			sandbox.stub(CoursePortfolio, "query").returns({
+				// stub the CoursePortfolio.query().eager() method
+				eager: sandbox.stub().returns({
+					// stub the CoursePortfolio.query().eager().findById() method
+					findById: sinon.stub().returns(course_input)
+				})
+			})
+
             //Act
-            var output = create.summarize(course_input);
+            const portfolio = await course_portfolio.get(1);
+            var output = create.summarize(portfolio);
             
             //Assert
-            expectoutputto.deep.equal({  
+            expectoutputto.deep.equal({
+                'course_name': 'null',
+                'course_number': 'CS498',
+                'instructor_name': 'Ethan Toney',
+                'section': 1,
+                'semester': 'fall',
+                'year': 2019,
+                'number_students' : 5,
+                'course_score': 0.66,
+                'slo_scores': [0.66],
+                'artifact_scores': [1, 1, 0],
+                'student_evals': [
+                    {
+                        "id": 1,
+                        "portfolio_id": 1,
+                        "slo_id": 1,
+                        "slo": {
+                            "id": 1,
+                            "department_id": 1,
+                            "index": 2,
+                            "description": "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+                            "metrics": [
+                                {
+                                    "id": 1,
+                                    "slo_id": 1,
+                                    "index": 1,
+                                    "name": "Identify and interpret client needs and design constraints",
+                                    "exceeds": "n/a",
+                                    "meets": "n/a",
+                                    "partially": "n/a",
+                                    "not": "n/a"
+                                }
+                            ]
+                        },
+                        "artifacts": [
+                            {
+                                "id": 1,
+                                "portfolio_slo_id": 1,
+                                "index": 1,
+                                "name": "_unset_",
+                                "evaluations": [
+                                    {
+                                        "id": 1,
+                                        "artifact_id": 1,
+                                        "evaluation_index": 1,
+                                        "student_index": 1,
+                                        "evaluation": {
+                                            "id": 8,
+                                            "value" : "meets"
+                                        },
+                                        "file": null
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 2,
+                                "portfolio_slo_id": 1,
+                                "index": 2,
+                                "name": "_unset_",
+                                "evaluations": [
+                                    {
+                                        "id": 6,
+                                        "artifact_id": 2,
+                                        "evaluation_index": 1,
+                                        "student_index": 1,
+                                        "evaluation": {
+                                            "id": 7,
+                                            "value" : "exceeds"
+                                        },
+                                        "file": null
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 3,
+                                "portfolio_slo_id": 1,
+                                "index": 3,
+                                "name": "_unset_",
+                                "evaluations": [
+                                    {
+                                        "id": 11,
+                                        "artifact_id": 3,
+                                        "evaluation_index": 1,
+                                        "student_index": 1,
+                                        "evaluation": {
+                                            "id": 9,
+                                            "value" : "partially"
+                                        },
+                                        "file": null
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             });
 
         })
@@ -195,9 +513,9 @@ describe('Epic 5 - Download Course Portfolio', () => {
                 'semester': 'fall',
                 'year': 2019,
                 'number_students' : 5,
-                'course_score': 0.88,
-                'slo_scores': [0.88],
-                'artifact_scores': [0.88, 0.90, 0.73],
+                'course_score': 0.66,
+                'slo_scores': [0.66],
+                'artifact_scores': [1, 1, 0],
                 'student_evals': [
                     {
                         "id": 1,
@@ -289,6 +607,7 @@ describe('Epic 5 - Download Course Portfolio', () => {
             
             //Assert
             expect(pdf_made).to.be.true;
+            expect(fs.createReadStream('tmp/course_summary.pdf'))
 
         })
 
