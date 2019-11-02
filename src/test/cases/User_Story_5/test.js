@@ -1,8 +1,8 @@
-//const course_portfolio = require('../../../main/lib/course_portfolio')
+const course_portfolio = require('../../../main/lib/course_portfolio')
 var create = require('../../../main/lib/course_portfolio_create')
 const { expect } = require('../../chai')
 const sinon = require('sinon')
-var fs = require('fs')
+var fs = require('fs-extra')
 
 // we use a sandbox so that we can easily restore all stubs created in that sandbox
 const sandbox = sinon.createSandbox();
@@ -135,35 +135,47 @@ describe('Epic 5 - Download Course Portfolio', () => {
 			sandbox.restore()
         })
         
-        it('summarizes course', () => {
+        it('summarizes course', async () => {
             //Arrange
-			const CoursePortfolio = require('../../../main/models/CoursePortfolio')
 
-			// stub the CoursePortfolio.query() method
-			sandbox.stub(CoursePortfolio, "query").returns({
-				// stub the CoursePortfolio.query().eager() method
-				eager: sandbox.stub().returns({
-					// stub the CoursePortfolio.query().eager().findById() method
-					findById: sinon.stub().returns(course_input)
-				})
-			})
+            var callback = sandbox.stub(course_portfolio, "get");
+            callback.withArgs(1).returns(course_input);
 
             //Act
             const portfolio = await course_portfolio.get(1);
             var output = create.summarize(portfolio);
             
             //Assert
-            expectoutputto.deep.equal({
+            expect(output).to.deep.equal({
                 'course_name': 'Software Engineering for Senior Project',
                 'course_number': 'CS498',
                 'instructor_name': 'Ethan Toney',
                 'section': 1,
                 'semester': 'fall',
                 'year': 2019,
-                'number_students' : 5,
-                'course_score': 0.66,
-                'slo_scores': [0.66],
-                'artifact_scores': [1, 1, 0],
+                'num_students' : 5,
+                'course_score': 0.67,
+                'slo_scores': [
+                {
+                    'slo_description': "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+                    'slo_score': 0.67
+                }],
+                'artifact_scores': [
+                {
+                    'artifact_id': 1,
+                    'score' : 1, 
+                    'portfolio_slo_id' : 1 
+                }, 
+                {
+                    'artifact_id': 2,
+                    'score' : 1, 
+                    'portfolio_slo_id' : 1 
+                }, 
+                {
+                    'artifact_id': 3,
+                    'score' : 0, 
+                    'portfolio_slo_id' : 1 
+                }],
                 'student_evals': [
                     {
                         "id": 1,
@@ -252,39 +264,49 @@ describe('Epic 5 - Download Course Portfolio', () => {
 
         })
 
-        it('uses linkblue ID if instructor name not found', () => {
+        it('uses linkblue ID if instructor name not found', async () => {
             //Arrange
-            let course_input = {...course_input};
-            delete course_input.instructor_name;
-
-            //Arrange
-			const CoursePortfolio = require('../../../main/models/CoursePortfolio')
-
-			// stub the CoursePortfolio.query() method
-			sandbox.stub(CoursePortfolio, "query").returns({
-				// stub the CoursePortfolio.query().eager() method
-				eager: sandbox.stub().returns({
-					// stub the CoursePortfolio.query().eager().findById() method
-					findById: sinon.stub().returns(course_input)
-				})
-			})
+            var new_course_input = JSON.parse(JSON.stringify(course_input));
+            delete new_course_input.instructor.instructor_name;
+            
+            var callback = sandbox.stub(course_portfolio, "get");
+            callback.withArgs(1).returns(new_course_input);
 
             //Act
             const portfolio = await course_portfolio.get(1);
             var output = create.summarize(portfolio);
             
             //Assert
-            expectoutputto.deep.equal({
+            expect(output).to.deep.equal({
                 'course_name': 'Software Engineering for Senior Project',
                 'course_number': 'CS498',
                 'instructor_name': 'ethan.toney',
                 'section': 1,
                 'semester': 'fall',
                 'year': 2019,
-                'number_students' : 5,
-                'course_score': 0.66,
-                'slo_scores': [0.66],
-                'artifact_scores': [1, 1, 0],
+                'num_students' : 5,
+                'course_score': 0.67,
+                'slo_scores': [
+                {
+                    'slo_description': "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+                    'slo_score': 0.67
+                }],
+                'artifact_scores': [
+                {
+                    'artifact_id': 1,
+                    'score' : 1, 
+                    'portfolio_slo_id' : 1 
+                }, 
+                {
+                    'artifact_id': 2,
+                    'score' : 1, 
+                    'portfolio_slo_id' : 1 
+                }, 
+                {
+                    'artifact_id': 3,
+                    'score' : 0, 
+                    'portfolio_slo_id' : 1 
+                }],
                 'student_evals': [
                     {
                         "id": 1,
@@ -373,38 +395,49 @@ describe('Epic 5 - Download Course Portfolio', () => {
 
         })
 
-        it('leaves null if course name not found', () => {
+        it('leaves null if course name not found', async () => {
             //Arrange
-            let course_input = {...course_input};
-            delete course_input.course_name;
+            var new_course_input =JSON.parse(JSON.stringify(course_input));
+            delete new_course_input.course.course_name;
 
-			const CoursePortfolio = require('../../../main/models/CoursePortfolio')
-
-			// stub the CoursePortfolio.query() method
-			sandbox.stub(CoursePortfolio, "query").returns({
-				// stub the CoursePortfolio.query().eager() method
-				eager: sandbox.stub().returns({
-					// stub the CoursePortfolio.query().eager().findById() method
-					findById: sinon.stub().returns(course_input)
-				})
-			})
+			var callback = sandbox.stub(course_portfolio, "get");
+            callback.withArgs(1).returns(new_course_input);
 
             //Act
             const portfolio = await course_portfolio.get(1);
             var output = create.summarize(portfolio);
             
             //Assert
-            expectoutputto.deep.equal({
-                'course_name': 'null',
+            expect(output).to.deep.equal({
+                'course_name': null,
                 'course_number': 'CS498',
                 'instructor_name': 'Ethan Toney',
                 'section': 1,
                 'semester': 'fall',
                 'year': 2019,
-                'number_students' : 5,
-                'course_score': 0.66,
-                'slo_scores': [0.66],
-                'artifact_scores': [1, 1, 0],
+                'num_students' : 5,
+                'course_score': 0.67,
+                'slo_scores': [
+                {
+                    'slo_description': "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+                    'slo_score': 0.67
+                }],
+                'artifact_scores': [
+                {
+                    'artifact_id': 1,
+                    'score' : 1, 
+                    'portfolio_slo_id' : 1 
+                }, 
+                {
+                    'artifact_id': 2,
+                    'score' : 1, 
+                    'portfolio_slo_id' : 1 
+                }, 
+                {
+                    'artifact_id': 3,
+                    'score' : 0, 
+                    'portfolio_slo_id' : 1 
+                }],
                 'student_evals': [
                     {
                         "id": 1,
@@ -500,7 +533,7 @@ describe('Epic 5 - Download Course Portfolio', () => {
 		afterEach(() => {
 			// this is needed to restore the CoursePortfolio model back to it's original state
 			// we don't want to break all future unit tests
-			sandbox.restore()
+            sandbox.restore();
         })
 
         it('creates course summary PDF', () => {
@@ -512,10 +545,29 @@ describe('Epic 5 - Download Course Portfolio', () => {
                 'section': 1,
                 'semester': 'fall',
                 'year': 2019,
-                'number_students' : 5,
+                'num_students' : 5,
                 'course_score': 0.66,
-                'slo_scores': [0.66],
-                'artifact_scores': [1, 1, 0],
+                'slo_scores': [
+                {
+                    'slo_description': "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program's discipline.",
+                    'slo_score': 0.66
+                }],
+                'artifact_scores': [
+                {
+                    'artifact_id': 1,
+                    'score' : 1, 
+                    'portfolio_slo_id' : 1 
+                }, 
+                {
+                    'artifact_id': 2,
+                    'score' : 1, 
+                    'portfolio_slo_id' : 1 
+                }, 
+                {
+                    'artifact_id': 3,
+                    'score' : 0, 
+                    'portfolio_slo_id' : 1 
+                }],
                 'student_evals': [
                     {
                         "id": 1,
@@ -601,25 +653,27 @@ describe('Epic 5 - Download Course Portfolio', () => {
                     }
                 ]
             };
-            var directory = "tmp";
+            var directory = __dirname + '/tmp';
+
             //Act
             var pdf_made = create.create_course_summary_PDF(summary, directory);
             
             //Assert
             expect(pdf_made).to.be.true;
-            expect(fs.createReadStream('tmp/course_summary.pdf'))
-
+            expect(fs.existsSync(directory + '/course_summary.pdf')).to.be.true;
+    
+            //Clean up (done only for this test)
+            fs.removeSync(directory);
         })
 
         it('throws error on invalid summary', () => {
             //Arrange
-            var summary = {
-            };
-            var directory = "tmp";
+            var summary = {};
+            var directory = __dirname + '/tmp';
             //Act
             //Assert
             expect(() => {return create.create_course_summary_PDF(summary, directory)}).to.throw();
-
+            expect(fs.existsSync(directory + '/course_summary.pdf')).to.be.false;
         })
 
     })
