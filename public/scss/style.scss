@@ -24,4 +24,27 @@ a {
 		}
 	}
 }
-	
+#course_manage_page h3 {
+    border-bottom: 3px solid royalblue;
+    width: 100%;
+    margin: 15px 0px;
+    text-align: left;
+}
+
+select {
+    background: royalblue;
+    color: white;
+}
+
+[type=button], [type=reset], [type=submit], button {
+    cursor: pointer;
+    color: white;
+    background: royalblue;
+    padding: 12px 30px;
+    border-radius: 8px;
+}
+
+[type=button]:hover, [type=reset]:hover, [type=submit]:hover, button:hover {
+    color: royalblue;
+    background: white;
+}
