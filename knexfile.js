@@ -1,5 +1,7 @@
 const common = {
 	client: 'postgresql',
+	user: 'postgres',
+	password: '9K!m!mar0S', 
 	migrations: {
 		directory: './src/main/migrations'
 	},
@@ -12,7 +14,9 @@ const common = {
 module.exports = {
   development: Object.assign({
     connection: {
-      database: 'abet_system_dev'
+      database: 'abet_system_dev',
+      user: 'postgres',
+      password: '9K!m!mar0S',
     },
     seeds: {
       directory: './src/dev/seeds'
@@ -21,7 +25,9 @@ module.exports = {
 
   test: Object.assign({
     connection: {
-      database: 'abet_system_test'
+      database: 'abet_system_test',
+      user: 'postgres',
+      password: '9K!m!mar0S'
     },
     seeds: {
       directory: './src/test/seeds'
