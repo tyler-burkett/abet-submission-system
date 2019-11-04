@@ -1,0 +1,11 @@
+The command for backing up the databse to an SQL or Archive file is:
+
+
+pg_dump abet_system_dev > abet_sys_dev_backup.sql
+
+NOTE: abet_system_dev is just the name of the database.
+      abet_sys_dev_backup.sql is the name of the file to be saved.
+
+
+User Story 15 requests to save backups of the database every week. By using this command, we instruct npm
+to dump the database to a file saved locally.
