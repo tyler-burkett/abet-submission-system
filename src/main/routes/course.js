@@ -7,6 +7,8 @@ var router = express.Router();
 const Department = require('../models/Department')
 const TermType = require('../models/TermType')
 
+const { body, validationResult, sanitizeParam} = require('express-validator');
+
 const course_manage_page = async (res, course_id) => {
 	let course_info = {
 		student_learning_outcomes: [
@@ -115,14 +117,45 @@ router.route('/')
 
 /* GET course page */
 router.route('/:id')
-	.get(html.auth_wrapper(async (req, res, next) => {
+	.get(
+		sanitizeParam('id').customSanitizer((value, {req}) => {
+			return req.params.id !== 'new' ? 'new' : Number(req.params.id); 
+		})
+	,html.auth_wrapper(async (req, res, next) => {
+
+		// check for sanitation errors; 
+		// respond with Unprocessable Entity code (422) if errors occured
+		const errors = validationResult(req)
+		if (!errors.isEmpty()) {
+			return res.status(422).json({ errors: errors.array() })
+		}
+
+		// process request for course page
 		if (req.params.id === 'new') {
 			await course_new_page(res)
 		} else {
 			await course_manage_page(res, req.params.id)
 		}
 	}))
-	.post(html.auth_wrapper(async (req, res, next) => {
+	.post([
+		body('department'),
+		body('course_number'),
+		body('semester'),
+		body('course_year'),
+		body('num_students'),
+
+		// slo entries 
+		body('course_section')
+		],
+		html.auth_wrapper(async (req, res, next) => {
+		// check for sanitation errors; 
+		// respond with Unprocessable Entity code (422) if errors occured
+		const errors = validationResult(req)
+		if (!errors.isEmpty()) {
+			return res.status(422).json({ errors: errors.array() })
+		}
+
+		// process post request
 		if (req.params.id === 'new') {
 			if (req.body.course_submit) {
 				const course_portfolio = await course_portfolio_lib.new({

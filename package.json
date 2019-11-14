@@ -28,6 +28,7 @@
 		"cookie-parser": "~1.4.4",
 		"debug": "~2.6.9",
 		"express": "~4.16.1",
+		"express-validator": "^6.2.0",
 		"fs-extra": "^8.1.0",
 		"helmet": "^3.21.1",
 		"http-errors": "~1.6.3",
@@ -39,6 +40,7 @@
 		"objection": "^2.0.0-alpha.8",
 		"pdfkit": "^0.10.0",
 		"pg": "^7.12.1",
+		"request": "^2.88.0",
 		"tmp": "^0.1.0"
 	},
 	"devDependencies": {
