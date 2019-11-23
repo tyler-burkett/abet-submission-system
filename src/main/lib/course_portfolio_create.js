@@ -110,7 +110,8 @@ function create_course_summary_PDF(course_summary, directory) {
         'course_score',
         'slo_scores',
         'artifact_scores',
-        'student_evals'
+        'student_evals',
+        'archivedAt'
     ];
 
     //check if summary is valid
