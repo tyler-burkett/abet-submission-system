@@ -5,7 +5,6 @@ const { router, course_page_handler } = require("../../../main/routes/course")
 const { expect } = require('../../chai')
 const sinon = require('sinon')
 const request = require('supertest')
-const html = require('../../../main/common/html')
 const {validationResult} = require('express-validator');
 
 // we use a sandbox so that we can easily restore all stubs created in that sandbox
