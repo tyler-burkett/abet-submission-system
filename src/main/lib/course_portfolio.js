@@ -16,7 +16,6 @@ module.exports.new = async ({
 	};
 }
 
-
 module.exports.get = async (portfolio_id) => {
 	let raw_portfolio = await Portfolio.query()
 		.eager({

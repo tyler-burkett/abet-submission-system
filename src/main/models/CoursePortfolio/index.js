@@ -11,7 +11,6 @@ class CoursePortfolio extends Model {
 	static get idColumn() {
 		return 'id';
 	}
-
 	// Optional JSON schema. This is not the database schema! Nothing is generated
 	// based on this. This is only used for validation. Whenever a model instance
 	// is created it is checked against this schema. http://json-schema.org/.
@@ -21,6 +20,7 @@ class CoursePortfolio extends Model {
 			required: [
 				'course_id',
 				'instructor_id',
+				'instructor_name',
 				'semester_term_id',
 				'num_students',
 				'section',
@@ -31,6 +31,7 @@ class CoursePortfolio extends Model {
 				id: { type: 'integer' },
 				course_id: { type: 'integer' },
 				instructor_id: { type: 'integer' },
+				instructor_name: { type: 'string' },
 				semester_term_id: { type: 'integer' },
 				num_students: { type: 'integer' },
 				section: { type: 'integer' },

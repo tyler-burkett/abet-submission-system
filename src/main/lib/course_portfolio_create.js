@@ -2,6 +2,74 @@
 
 const PDFDocument = require('pdfkit');
 var fs = require('fs');
+var zipper = require('zip-local');
+
+var zipper = require('zip-local');
+
+function generateZip(evals, directory){
+    var generate_pdfs = printStudentEvals(evals, directory);
+    if(!generate_pdfs){
+        return false;
+    }
+    zipper.sync.zip(directory).compress().save("course_evaluation.zip", function(error) {
+        if(error) {
+            return false;
+        }
+    });
+    return true;
+}
+
+
+function printStudentEvals(evals, directory){
+    var artifacts= evals['artifacts'];
+    
+    for (var artifact of artifacts){
+        for (var evaluation of artifact['evaluations']){
+            
+
+   var components = [
+    'id',
+    'artifact_id',
+    'evaluation_index',
+    'student_index',
+    'evaluations',
+    'file'
+];
+   // Create PDF
+   const doc = new PDFDocument;
+  var direct = directory;
+   if (!fs.existsSync(directory)){
+       fs.mkdirSync(directory);
+   }
+   var path = direct + '/student_eval_1.pdf';
+   var writeStream = fs.createWriteStream(path, {'mode': 0o777});
+   doc.pipe(writeStream);
+   
+   // Create Title
+   doc.font('Times-Roman')
+       .fontSize(25)
+       .text('Student Evaluation ' + String(evaluation['id']));
+
+   // Fill in PDF with data from course summary
+   for (var name in components) {
+       if (evaluation[name] != null){
+       doc.font('Times-Roman')
+       .fontSize(12)
+       .text(name + ': ' + String(evaluation[name]));
+       } else {
+        doc.font('Times-Roman')
+        .fontSize(12)
+        .text(name + ': null');
+       }
+   }
+
+   // close the PDF document to save changes
+   doc.end();
+    }
+}
+   // PDFs are made at this point, so indicate success
+   return true;
+}
 
 function summarize(course_portfolio) {
     var summary = {};
@@ -151,4 +219,4 @@ function create_course_summary_PDF(course_summary, directory) {
 }
 
 //express download function
-    module.exports = {summarize, create_course_summary_PDF};
+    module.exports = {printStudentEvals, generateZip, summarize, create_course_summary_PDF};

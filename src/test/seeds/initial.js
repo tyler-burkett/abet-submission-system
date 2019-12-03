@@ -146,6 +146,8 @@ exports.seed = knex => Promise.resolve((async () => {
 			id: 1,
 			course_id: 1,
 			instructor_id: 1,
+			instructor_name: "Ethan Toney",
+			course_name: "CS498",
 			semester_term_id: 1,
 			num_students: 5,
 			section: 1,
