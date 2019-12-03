@@ -15,7 +15,6 @@ describe('Lib - CoursePortfolio', () => {
 			// we don't want to break all future unit tests
 			sandbox.restore()
 		})
-
 		it('with id', async () => {
 			// Arrange
 			const CoursePortfolio = require('../../../main/models/CoursePortfolio')

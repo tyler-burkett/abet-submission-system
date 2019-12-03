@@ -19,6 +19,35 @@ describe('Model - CoursePortfolio', () => {
 				year: 2019
 			})
 		})
+		it('USER STORY (EPIC) #5: with instructor', async () => {
+			const sl = await CoursePortfolio.query()
+				.where('instructor_id', '1')
+			const slo = sl[0]
+			expect(slo).to.deep.equal({
+				id: 1,
+				course_id: 1,
+				instructor_id: 1,
+				semester_term_id: 1,
+				num_students: 5,
+				section: 1,
+				year: 2019
+			})
+		})
+
+		it('USER STORY (EPIC) #5: with course id', async () => {
+			const sl = await CoursePortfolio.query()
+				.where('course_id', '1')
+			const slo = sl[0]
+			expect(slo).to.deep.equal({
+				id: 1,
+				course_id: 1,
+				instructor_id: 1,
+				semester_term_id: 1,
+				num_students: 5,
+				section: 1,
+				year: 2019
+			})
+		})
 
 	})
 
