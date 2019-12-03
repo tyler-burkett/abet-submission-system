@@ -13,20 +13,24 @@ describe('Model - CoursePortfolio', () => {
 				id: 1,
 				course_id: 1,
 				instructor_id: 1,
+				instructor_name: "Ethan Toney",
+				course_name: "CS498",
 				semester_term_id: 1,
 				num_students: 5,
 				section: 1,
 				year: 2019
 			})
 		})
-		it('USER STORY (EPIC) #5: with instructor', async () => {
+		it('USER STORY (EPIC) #5: with instructor name', async () => {
 			const sl = await CoursePortfolio.query()
-				.where('instructor_id', '1')
+				.where('instructor_name', 'Ethan Toney')
 			const slo = sl[0]
 			expect(slo).to.deep.equal({
 				id: 1,
 				course_id: 1,
 				instructor_id: 1,
+				instructor_name: "Ethan Toney",
+				course_name: "CS498",
 				semester_term_id: 1,
 				num_students: 5,
 				section: 1,
@@ -34,14 +38,16 @@ describe('Model - CoursePortfolio', () => {
 			})
 		})
 
-		it('USER STORY (EPIC) #5: with course id', async () => {
+		it('USER STORY (EPIC) #5: with course name', async () => {
 			const sl = await CoursePortfolio.query()
-				.where('course_id', '1')
+				.where('course_name', 'CS498')
 			const slo = sl[0]
 			expect(slo).to.deep.equal({
 				id: 1,
 				course_id: 1,
 				instructor_id: 1,
+				instructor_name: "Ethan Toney",
+				course_name: "CS498",
 				semester_term_id: 1,
 				num_students: 5,
 				section: 1,
