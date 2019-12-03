@@ -1,5 +1,7 @@
 const common = {
 	client: 'postgresql',
+    user: 'postgres',
+    password: 'abc',
 	migrations: {
 		directory: './src/main/migrations'
 	},
