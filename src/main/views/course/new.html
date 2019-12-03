@@ -71,6 +71,18 @@
 			</div>
 		</div>
 		<div class="row container">
+			<div class="col-7 container">
+				<label for="archive dater">Read-Only Date</label>
+			</div>
+			<div class="col-6 row">
+				{{#archivedAt}}
+				<div class="col-4">
+					<input type="checkbox" name="slo_{{id}}">SLO{{index}}</input>
+				</div>
+				{{/archivedAt}}
+			</div>
+		</div>
+		<div class="row container">
 			<div class="col container">
 				<label for="due_date">Due Date</label>
 			</div>	

@@ -29,6 +29,7 @@
 		"dateformat": "^3.0.3",
 		"debug": "~2.6.9",
 		"express": "~4.16.1",
+		"express-validator": "^6.2.0",
 		"fs-extra": "^8.1.0",
 		"helmet": "^3.21.1",
 		"http-errors": "~1.6.3",
@@ -47,6 +48,7 @@
 		"chai-as-promised": "^7.1.1",
 		"mocha": "^6.2.1",
 		"nodemon": "^1.19.2",
-		"sinon": "^7.5.0"
+		"sinon": "^7.5.0",
+		"supertest": "^4.0.2"
 	}
 }
