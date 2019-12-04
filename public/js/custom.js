@@ -13,4 +13,5 @@ $(document).ready(function(){
         }
     }
     
+    $('.archived_courses .due_date + td a').css('display', 'none');
 });
