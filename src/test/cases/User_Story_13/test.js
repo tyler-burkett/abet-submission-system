@@ -150,9 +150,7 @@ describe('User Story 13: Display the date a course portfolio becomes read only',
             var output = create.summarize(portfolio);
 
             //Assert
-            expect(output).to.deep.equal({
-                'archivedAt': 2022
-            });
+            expect(output).to.have.property('archivedAt', 2022);
         })
 
         it('grab date from Database for display', async () => {
@@ -168,9 +166,7 @@ describe('User Story 13: Display the date a course portfolio becomes read only',
             var output = create.summarize(portfolio);
 
             //Assert
-            expect(output).to.deep.equal({
-                'archivedAt': 2022
-            });
+            expect(output).to.have.property('archivedAt', 2022);
 
         })
         })
