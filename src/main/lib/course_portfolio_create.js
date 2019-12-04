@@ -158,8 +158,11 @@ function summarize(course_portfolio) {
     summary['course_score'] = parseFloat((sum / total).toFixed(2));
 
     summary['student_evals'] = course_portfolio.outcomes;
-
-//    summary['archivedAt'] = course_portfolio.archivedAt;
+    
+    if(course_portfolio.hasOwnProperty('archivedAt')) {
+        summary['archivedAt'] = course_portfolio.archivedAt;
+    }
+    
     return summary;
 } 
 
@@ -179,8 +182,7 @@ function create_course_summary_PDF(course_summary, directory) {
         'course_score',
         'slo_scores',
         'artifact_scores',
-        'student_evals',
-        'archivedAt'
+        'student_evals'
     ];
 
     //check if summary is valid
