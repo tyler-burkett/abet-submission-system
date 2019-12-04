@@ -159,6 +159,7 @@ function summarize(course_portfolio) {
 
     summary['student_evals'] = course_portfolio.outcomes;
 
+//    summary['archivedAt'] = course_portfolio.archivedAt;
     return summary;
 } 
 

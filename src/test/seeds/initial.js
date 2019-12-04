@@ -152,7 +152,7 @@ exports.seed = knex => Promise.resolve((async () => {
 			num_students: 5,
 			section: 1,
 			year: 2019,
-			archivedAt: 2022
+			/*archivedAt: 2022*/
 		}
 	])
 	await knex('portfolio_slo').insert([
